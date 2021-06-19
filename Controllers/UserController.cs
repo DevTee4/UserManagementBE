@@ -70,6 +70,9 @@ namespace Assessment.Controllers
             _userService.RemoveAll();
             return NoContent();
         }
+        [HttpGet("Search/{param}")]
+        public ActionResult<List<User>> Search(string param) =>
+           Ok(_userService.Search( param));
   
     }
 }

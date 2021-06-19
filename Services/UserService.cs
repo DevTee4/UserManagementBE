@@ -12,7 +12,10 @@ namespace Services{
             var client = new MongoClient(setting.ConnectionString);
             var database = client.GetDatabase(setting.DatabaseName);
             _user = database.GetCollection<User>(setting.CollectionName);
+               _user.Indexes.CreateOne(new CreateIndexModel<User>(Builders<User>.IndexKeys.Text("$**")));
         }
+         public List<User> Search(string param) =>
+            _user.Find(Builders<User>.Filter.Text(param)).ToList();
 
         public List<User> Get() =>
             _user.Find(user => true).ToList();
