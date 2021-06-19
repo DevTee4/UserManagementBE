@@ -420,6 +420,8 @@ Temporary Items
 Thumbs.db
 ehthumbs.db
 ehthumbs_vista.db
+#exclude bin
+bin/
 
 # Dump file
 *.stackdump
