@@ -17,8 +17,8 @@ namespace Services{
         public List<User> Get() =>
             _user.Find(user => true).ToList();
 
-        public User Get(string[] id) =>
-            _user.Find<User>(Builders<User>.Filter.In("_id", id)).FirstOrDefault();
+        public User Get(string id) =>
+            _user.Find<User>(user => user._id == id).FirstOrDefault();
 
         public List<User> Create(List<User> users)
         {
@@ -29,8 +29,11 @@ namespace Services{
         public void Update(string id, User userIn) =>
             _user.ReplaceOne(user => user._id == id, userIn);
 
-        public void Remove(string[] id) => 
-            _user.DeleteMany(Builders<User>.Filter.In("_id", id));
+        public void Remove(string id) {
+            var split = id.Split(",");
+            var filter = Builders<User>.Filter.In(u=>u._id,split);
+            _user.DeleteMany(filter);
+        }
         public void RemoveAll() => 
             _user.DeleteManyAsync(Builders<User>.Filter.Empty);
     }

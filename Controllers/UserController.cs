@@ -26,8 +26,7 @@ namespace Assessment.Controllers
         [HttpGet("{id:length(24)}", Name = "GetUser")]
         public ActionResult<User> Get(string id)
         {
-            var idsSplit = id.Split(',');
-            var user = _userService.Get(idsSplit);
+            var user = _userService.Get(id);
 
             if (user == null)
             {
@@ -41,16 +40,13 @@ namespace Assessment.Controllers
         public ActionResult<List<User>> Create([FromBody] List<User> users)
         {
             var createdUsers = _userService.Create(users);
-            // var doctorsFilter = Builders<User>.Filter.Eq(u => u.Profession, "Doctor");
-            // return CreatedAtRoute("GetUser", new { id = users._id.ToString() }, users);
             return createdUsers;
         }
 
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, User userIn)
         {
-            var idsSplit = id.Split(',');
-            var user = _userService.Get(idsSplit);
+            var user = _userService.Get(id);
 
             if (user == null)
             {
@@ -62,18 +58,10 @@ namespace Assessment.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string ids)
+        [HttpDelete("delete")]
+        public IActionResult Delete([FromQuery] string  id)
         {
-            var idsSplit = ids.Split(',');
-            var user = _userService.Get(idsSplit);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-            _userService.Remove(idsSplit);
-
+            _userService.Remove(id);
             return NoContent();
         }
         [HttpDelete]
